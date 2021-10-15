@@ -14,8 +14,8 @@ import talib
 
 api = sj.Shioaji()
 
-UID = "B123324265"
-PWD = "Kobe8922"
+UID = ""
+PWD = ""
 api.login(UID, PWD)
 
 def LineNotifyPush(msg, image_path, Token):
