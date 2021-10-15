@@ -127,7 +127,7 @@ def Work():
                     mpf.make_addplot(MPF_DF['WILLR'].values,panel= 7,color="b",ylabel='WILLR',ylim=(-102,2),secondary_y = False,y_on_right=False)]
         MPF_DF_MAX_Limit = MPF_DF["BBup"].max() + 2
         MPF_DF_Min_Limit = MPF_DF["BBlow"].min() - 2
-        mpf.plot(MPF_DF,type='candle',style=s,volume=True,addplot = ADD_Plot,ylabel='',title = StockKey, tight_layout=True,ylim=(MPF_DF_Min_Limit,MPF_DF_MAX_Limit),savefig= 'TW.png')
+        mpf.plot(MPF_DF,type='candle',style=s,volume=True,addplot = ADD_Plot,ylabel='',title = StockKey, tight_layout=True,ylim=(MPF_DF_Min_Limit,MPF_DF_MAX_Limit),savefig=StockKey + '.png')
         
         PlusFall = int(kbarsDF.Close.iat[-1]) - int(kbarsDF.Close.iat[-2])
         msg = StockID[StockKey] + '\n時間:' + str(EndDate) + '\n漲跌:' + str(PlusFall) + \
@@ -136,7 +136,7 @@ def Work():
         if TodayDate.dayofweek != 0 and TodayDate.dayofweek != 6:
             Token = [''] # 輸入你的Line token 註:可以以串列方式輸入多組Token
             for Token in Token:
-                LineNotifyPush(msg,'TW.png', Token)
+                LineNotifyPush(msg,StockKey + '.png', Token)
         else:
             print('今日台股為假日')
     print(Work_Datetime + '完成推播')
