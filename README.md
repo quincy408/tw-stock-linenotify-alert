@@ -4,3 +4,4 @@
 - 可自訂推播多組股票
 - 也能推播多組帳號
 - 多個技術層面一目了然！
+![alt text](https://cdn.discordapp.com/attachments/659381940675411979/898503691533959218/TAIWAN_SE_WEIGHTED_INDEX.png)
