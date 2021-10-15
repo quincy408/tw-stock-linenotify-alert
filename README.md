@@ -4,4 +4,5 @@
 - 可自訂推播多組股票
 - 也能推播多組帳號
 - 多個技術層面一目了然！
+- 
 ![alt text](https://media.discordapp.net/attachments/659381940675411979/898504421212815370/TWSE.png)
