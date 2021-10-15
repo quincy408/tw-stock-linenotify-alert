@@ -36,7 +36,7 @@ def Work():
     EndDate = (datetime.datetime.now() + datetime.timedelta(days=0)).strftime("%Y-%m-%d")
     StartDate = (datetime.datetime.now() + datetime.timedelta(days=-120)).strftime("%Y-%m-%d")
     
-    StockID = {'TAIWAN SE WEIGHTED INDEX':'台股指數','2330':'台積電','2376':'技嘉'}
+    StockID = {'TAIWAN SE WEIGHTED INDEX':'台股指數','2330':'台積電','2376':'技嘉'} # 註:可自行添加 ,'股票代號':'公司名稱' 即可新增推播內容
     for StockKey, StockNamee in StockID.items():
         if StockKey == 'TAIWAN SE WEIGHTED INDEX':
             StockContract = api.Contracts.Indexs.TSE.TSE001
