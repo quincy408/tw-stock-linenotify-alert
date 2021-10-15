@@ -1,2 +1,2 @@
-# TW_STOCK_PUSH_LineNotify_USE_Shioaji
+#台股推播程式
 雲端架構實務這門課的作業
