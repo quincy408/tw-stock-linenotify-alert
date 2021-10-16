@@ -5,12 +5,12 @@ Created on Fri Oct 15 17:14:14 2021
 @author: quincy408
 """
 
-import pandas as pd
-import shioaji as sj
-import datetime
-import mplfinance as mpf
-import requests
-import talib
+import pandas as pd       # 好用的數據分析套件
+import shioaji as sj      # 永豐所推出的證卷套件 能查詢股票資訊 與股票下單
+import datetime           # 日期套件
+import mplfinance as mpf  # 將資料轉成圖表的套件
+import requests          # 能向伺服器提出請求的套件
+import talib             # 金融套件 能輕易算出各種技術指標
 
 api = sj.Shioaji()
 
@@ -18,7 +18,7 @@ UID = "" # 輸入永豐證卷的帳號
 PWD = "" # 輸入永豐證卷的密碼
 api.login(UID, PWD)
 
-def LineNotifyPush(msg, image_path, Token):
+def LineNotifyPush(msg, image_path, Token): # 發出通知的函數
     headers = {
         "Authorization":"Bearer " + Token
         }
@@ -31,12 +31,12 @@ def LineNotifyPush(msg, image_path, Token):
     else:
         print(r.status_code)
 
-def Work():
+def Work(): # 主要運作的函數
     Work_Datetime = str((datetime.datetime.now() + datetime.timedelta(days=0)).strftime("%Y-%m-%d %H:%M:%S"))
     EndDate = (datetime.datetime.now() + datetime.timedelta(days=0)).strftime("%Y-%m-%d")
     StartDate = (datetime.datetime.now() + datetime.timedelta(days=-120)).strftime("%Y-%m-%d")
     
-    StockID = {'TAIWAN SE WEIGHTED INDEX':'台股指數','2330':'台積電','2376':'技嘉'} # 註:可自行添加 ,'股票代號':'公司名稱' 即可新增推播內容
+    StockID = {'TAIWAN SE WEIGHTED INDEX':'台股指數','2330':'台積電','2376':'技嘉'}         # 註:可自行添加 ,'股票代號':'公司名稱' 即可新增推播內容
     for StockKey, StockNamee in StockID.items():
         if StockKey == 'TAIWAN SE WEIGHTED INDEX':
             StockContract = api.Contracts.Indexs.TSE.TSE001
@@ -50,7 +50,8 @@ def Work():
         kbarsDF.head()
         kbarsDF = kbarsDF.groupby('Date').agg({'Open': 'first', 'High': 'max', 'Low': 'min', 'Close': 'last','Volume':'sum'})
         kbarsDF=kbarsDF.iloc[2: , :]
-    
+        
+        # KD指標
         KD_DF = kbarsDF.copy()
         KD_DF['Min'] = KD_DF['Low'].rolling(9).min()
         KD_DF['Max'] = KD_DF['High'].rolling(9).max()
@@ -133,16 +134,13 @@ def Work():
         msg = StockID[StockKey] + '\n時間:' + str(EndDate) + '\n漲跌:' + str(PlusFall) + \
             '   漲跌幅(%):' + str(round((PlusFall / kbarsDF.Close.iat[-1])*100,2)) + '%\n最高點:' + str(round(kbarsDF.High.iat[-1],2)) + '   最低點:' + str(round(kbarsDF.Low.iat[-1],2)) + '\n收:' + str(round(kbarsDF.Close.iat[-1],2)) + '   量:' + str(round(kbarsDF.Volume.iat[-1],2))
         TodayDate = pd.Timestamp.now()
-        if TodayDate.dayofweek != 0 and TodayDate.dayofweek != 6:
-            Token = [''] # 輸入你的Line token 註:可以以串列方式輸入多組Token
-            for Token in Token:
-                LineNotifyPush(msg,StockKey + '.png', Token)
-        else:
-            print('今日台股為假日')
+        Token = ['']                                 # 輸入你的Line token 註:可以以串列方式輸入多組Token
+        for Token in Token:
+            LineNotifyPush(msg,StockKey + '.png', Token)
     print(Work_Datetime + '完成推播')
   
 
 if __name__ == '__main__':
     TodayDate = pd.Timestamp.now()
-    if TodayDate.dayofweek != 5 and TodayDate.dayofweek != 6:
+    if TodayDate.dayofweek != 5 and TodayDate.dayofweek != 6: # 六、日沒開盤不做任何作業
         Work()
